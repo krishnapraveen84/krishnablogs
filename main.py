@@ -313,4 +313,4 @@ def delete_post(id):
     return redirect(url_for('one'))
 
 
-app.run(debug=True)
+app.run(host='0.0.0.0', port=5000)
