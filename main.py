@@ -146,7 +146,7 @@ def admin_only(function):
     return admin
 
 
-@app.route("/")
+@app.route(f"{request.url}/")
 def one():
     # blog = requests.get(url="https://api.npoint.io/c790b4d5cab58020d391").json()
     session = Session()
