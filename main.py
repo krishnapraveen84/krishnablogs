@@ -146,7 +146,7 @@ def admin_only(function):
     return admin
 
 
-@app.route(f"{request.url}/")
+@app.route("/")
 def one():
     # blog = requests.get(url="https://api.npoint.io/c790b4d5cab58020d391").json()
     session = Session()
@@ -313,4 +313,4 @@ def delete_post(id):
     return redirect(url_for('one'))
 
 
-app.run()
+app.run(debug=True)
