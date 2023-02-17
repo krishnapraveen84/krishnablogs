@@ -25,7 +25,7 @@ sec_key = os.environ.get('SEC_KEY')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = sec_key
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+
 
 Bootstrap(app)
 login_manager = LoginManager(app)
@@ -79,11 +79,11 @@ Session = sessionmaker(bind=engine)
 class Posts(Base):
     __tablename__ = 'blog_post'
     id = Column(Integer, primary_key=True)
-    title = Column(String(250), nullable=False)
-    date = Column(String())
+    title = Column(String, nullable=False)
+    date = Column(String)
     body = Column(String, nullable=False)
-    img_url = Column(String(10000), nullable=False)
-    subtitle = Column(String(250), nullable=False)
+    img_url = Column(String, nullable=False)
+    subtitle = Column(String, nullable=False)
     # we have to create a foreign key to link posts and users (primary_key is users_data.id)
     author_id = Column(Integer, ForeignKey('User_data.id'))
     # the user.id will be user primary_key i.e id in the table
@@ -127,7 +127,7 @@ class Comment(Base):
 
 
 # Users.blog_post = relationship("Posts", order_by=Posts.id, back_populates='blog_post')
-# Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
 
 
 @login_manager.user_loader
@@ -273,6 +273,7 @@ def make_post():
         session.commit()
         return redirect(url_for('one'))
     return render_template('make-post.html', form=form, year=year)
+
 
 
 @app.route('/edit_post/<int:id>', methods=['GET', 'POST'])
