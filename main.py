@@ -238,7 +238,7 @@ def receive_data():
         with smtplib.SMTP("smtp.gmail.com", 587) as connection:
             connection.starttls()  # secures the connections so impossible to read our data along the line
             connection.login(user=my_email, password=password)
-            connection.sendmail(from_addr=my_email, to_addrs=email,
+            connection.sendmail(from_addr=email, to_addrs=my_email,
                                 msg=f"\n\nContact_Me\n\n Name: {name}\n\n Email: {email}\n\n Phone: {phone}\n\n Message: {message}")
         print(name)
         print(email)
