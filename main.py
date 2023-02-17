@@ -11,7 +11,7 @@ from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditor, CKEditorField
 
 # >>>>> creating sqlite database by sqlalchemy ORM(object relational mapper) >>>>>
-from sqlalchemy import Integer, String, Column, ForeignKey
+from sqlalchemy import Integer, String, Column, ForeignKey, LargeBinary
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
@@ -68,7 +68,6 @@ class CommentForm(FlaskForm):
 
 url_db = os.environ.get('DATABASE_URL')
 db_url = url_db.replace("postgres://", "postgresql://")
-print(url_db)
 engine = create_engine(db_url, echo=True)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
@@ -81,9 +80,9 @@ class Posts(Base):
     __tablename__ = 'blog_post'
     id = Column(Integer, primary_key=True)
     title = Column(String(250), nullable=False)
-    date = Column(String(10))
+    date = Column(String())
     body = Column(String, nullable=False)
-    img_url = Column(String, nullable=False)
+    img_url = Column(String(10000), nullable=False)
     subtitle = Column(String(250), nullable=False)
     # we have to create a foreign key to link posts and users (primary_key is users_data.id)
     author_id = Column(Integer, ForeignKey('User_data.id'))
@@ -137,7 +136,7 @@ def load_user(user_id):
 
 
 # <<< By this line the table created in the database >>>>
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
 
 
 # >>>> Python Decorators >>>>
