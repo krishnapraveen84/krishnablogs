@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, abo
 from functools import wraps
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
+from wtforms import StringField, SubmitField, PasswordField
 from wtforms.validators import DataRequired
 from flask_ckeditor import CKEditor, CKEditorField
 
@@ -25,6 +25,7 @@ sec_key = os.environ.get('SEC_KEY')
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = sec_key
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 
 Bootstrap(app)
 login_manager = LoginManager(app)
@@ -50,13 +51,13 @@ class Blog(FlaskForm):
 class Register(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     email_id = StringField('Email', validators=[DataRequired()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Sing UP')
 
 
 class LogIn(FlaskForm):
     email = StringField('Email', validators=[DataRequired()])
-    password = StringField('Password', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField("Log In")
 
 
@@ -65,7 +66,10 @@ class CommentForm(FlaskForm):
     submit = SubmitField("POST")
 
 
-engine = create_engine('sqlite:///posts.db', echo=True)
+url_db = os.environ.get('DATABASE_URL')
+db_url = url_db.replace("postgres://", "postgresql://")
+print(url_db)
+engine = create_engine(db_url, echo=True)
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 
@@ -133,7 +137,8 @@ def load_user(user_id):
 
 
 # <<< By this line the table created in the database >>>>
-# Base.metadata.create_all(engine)
+Base.metadata.create_all(engine)
+
 
 # >>>> Python Decorators >>>>
 def admin_only(function):
