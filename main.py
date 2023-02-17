@@ -21,7 +21,6 @@ from flask_login import login_user, LoginManager, login_required, current_user, 
 from flask_gravatar import Gravatar
 import os
 
-
 sec_key = os.environ.get('SEC_KEY')
 
 app = Flask(__name__)
@@ -30,7 +29,8 @@ app.config['SECRET_KEY'] = sec_key
 Bootstrap(app)
 login_manager = LoginManager(app)
 ckeditor = CKEditor(app=app)
-gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False, base_url=None)
+gravatar = Gravatar(app, size=100, rating='g', default='retro', force_default=False, force_lower=False, use_ssl=False,
+                    base_url=None)
 # >>>> Datetime >>>>
 date = datetime.date.today()
 year = date.year
@@ -313,4 +313,5 @@ def delete_post(id):
     return redirect(url_for('one'))
 
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
