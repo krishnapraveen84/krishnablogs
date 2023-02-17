@@ -26,7 +26,6 @@ sec_key = os.environ.get('SEC_KEY')
 app = Flask(__name__)
 app.config['SECRET_KEY'] = sec_key
 
-
 Bootstrap(app)
 login_manager = LoginManager(app)
 ckeditor = CKEditor(app=app)
@@ -127,7 +126,7 @@ class Comment(Base):
 
 
 # Users.blog_post = relationship("Posts", order_by=Posts.id, back_populates='blog_post')
-Base.metadata.create_all(engine)
+# Base.metadata.create_all(engine)
 
 
 @login_manager.user_loader
@@ -275,12 +274,12 @@ def make_post():
     return render_template('make-post.html', form=form, year=year)
 
 
-
 @app.route('/edit_post/<int:id>', methods=['GET', 'POST'])
 @login_required
 @admin_only
 def edit_post(id):
-    id = id - 1
+    id = id - 3
+    print(id)
     session = Session()
     post = session.query(Posts).all()
 
